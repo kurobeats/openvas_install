@@ -25,7 +25,7 @@
 
 
 
-DIRECTORY="~/openvas-dev"
+DIRECTORY="openvas-dev"
 VERSION="+beta1"
 LIBRARIES="openvas-libraries-7.0"
 SCANNER="openvas-scanner-4.0"
@@ -34,24 +34,27 @@ GREENBONE="greenbone-security-assistant-5.0"
 CLI="openvas-cli-1.3"
 
 
-if [ ! -d "$DIRECTORY" ]; then
+if [ ! -d ~/${DIRECTORY} ]; then
+  echo "Creating openvas-dev directory"
   mkdir openvas-dev
 fi
 
-cd ~/openvash-dev
+cd ~/$DIRECTORY
 
-sudo apt-get -y install sudo build-essential make cmake pkg-config nmap libssh-dev gnutls-dev libglib2.0-dev libpcap-dev libgpgme11-dev uuid-dev bison libksba-dev rsync sqlite3 wget curl alien fakeroot libmicrohttpd-dev libxml2-dev libxslt1-dev xsltproc
+
+echo "Installing needed packages"
+sudo apt-get -y install sudo build-essential make cmake pkg-config nmap libssh-dev libgnutls-dev  libglib2.0-dev libpcap-dev libgpgme11-dev uuid-dev bison libksba-dev rsync sqlite3 wget curl alien fakeroot libmicrohttpd-dev libxml2-dev libxslt1-dev xsltproc
 
 
 echo "exporting PGK_CONFIG_PATH"
-export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/opt/openvas/lib/pkgconfig
+export PKG_CONFIG_PATH=/opt/openvas/lib/pkgconfig
 
 
 
 echo "Downloading and building $LIBRARIES$VERSION"
 if [ ! -f "$LIBRARIES$VERSION.tar.gz" ]; then
 
-  wget -O $DIRECTORY http://wald.intevation.org/frs/download.php/1340/$LIBRARIES$VERSION.tar.gz
+  wget --directory-prefix ~/$DIRECTORY http://wald.intevation.org/frs/download.php/1340/$LIBRARIES$VERSION.tar.gz
 fi
 
 
@@ -71,12 +74,12 @@ make
 make doc
 sudo make install
 make rebuild_cache
-cd $DIRECTORY
+cd ~/$DIRECTORY
 
 
 echo "Downloading and building $SCANNER$VERSION"
 if [ ! -d "$SCANNER$VERSION.tar.gz" ]; then
-  wget -O $DIRECTORY http://wald.intevation.org/frs/download.php/1344/$SCANNER$VERSION.tar.gz
+  wget --directory-prefix ~/$DIRECTORY http://wald.intevation.org/frs/download.php/1344/$SCANNER$VERSION.tar.gz
 fi
 
 tar -zxvf openvas-scanner-*
@@ -95,13 +98,13 @@ make
 make doc
 sudo make install
 make rebuild_cache
-cd $DIRECTORY
+cd ~/$DIRECTORY
 
 
 
 echo "Downloading and building $MANAGER$VERSION"
 if [ ! -d "$MANAGER$VERSION.tar.gz" ]; then
-  wget -O $DIRECTORY http://wald.intevation.org/frs/download.php/1350/$MANAGER$VERSION.tar.gz
+  wget --directory-prefix ~/$DIRECTORY http://wald.intevation.org/frs/download.php/1350/$MANAGER$VERSION.tar.gz
 fi
 
 tar -zxvf openvas-manager-*
@@ -119,13 +122,13 @@ make
 make doc
 sudo make install
 make rebuild_cache
-cd $DIRECTORY
+cd ~/$DIRECTORY
 
 
 
 echo "Downloading and building $GREENBONE$VERSION"
 if [ ! -f "$GREENBONE$VERSION.tar.gz" ]; then
-  wget -O $DIRECTORY http://wald.intevation.org/frs/download.php/1365/$GREENBONE$VERSION.tar.gz
+  wget --directory-prefix ~/$DIRECTORY http://wald.intevation.org/frs/download.php/1365/$GREENBONE$VERSION.tar.gz
 fi
 
 tar -zxvf greenbone-security-assistant-*
@@ -144,13 +147,13 @@ make
 make doc
 sudo make install
 make rebuild_cache
-cd $DIRECTORY
+cd ~/$DIRECTORY
 
 
 
 echo "Downloading and building $CLI$VERSION"
 if [ ! -f "$CLI$VERSION.tar.gz" ]; then
-  wget -O $DIRECTORY http://wald.intevation.org/frs/download.php/1369/$CLI$VERSION.tar.gz
+  wget --directory-prefix ~/$DIRECTORY http://wald.intevation.org/frs/download.php/1369/$CLI$VERSION.tar.gz
 fi
 
 tar -zxvf openvas-cli-*
@@ -168,14 +171,14 @@ make
 make doc
 sudo make install
 make rebuild_cache
-cd $DIRECTORY
+cd ~/$DIRECTORY
 
 echo "Adding openvas to the enviroment PATH"
 export PATH=/opt/openvas/bin:/opt/openvas/sbin:$PATH
 
 
-sudo sh -c "echo '/opt/openvas/lib' >> /etc/ld.so.conf.d/openvas"
-suco sh -c "echo '/opt/openvas/lib' >> /etc/ld.so.conf"
+sudo sh -c "echo '/opt/openvas/lib' > /etc/ld.so.conf.d/openvas"
+sudo sh -c "echo '/opt/openvas/lib' >> /etc/ld.so.conf"
 sudo ldconfig
 
 # this above did not work for me I had to manually edit /etc/ld.co.conf
