@@ -51,7 +51,7 @@ export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/opt/openvas/lib/pkgconfig
 echo "Downloading and building $LIBRARIES$VERSION"
 if [ ! -f "$LIBRARIES$VERSION.tar.gz" ]; then
 
-  wget http://wald.intevation.org/frs/download.php/1340/$LIBRARIES$VERSION.tar.gz
+  wget -O $DIRECTORY http://wald.intevation.org/frs/download.php/1340/$LIBRARIES$VERSION.tar.gz
 fi
 
 
@@ -71,12 +71,12 @@ make
 make doc
 sudo make install
 make rebuild_cache
-
+cd $DIRECTORY
 
 
 echo "Downloading and building $SCANNER$VERSION"
 if [ ! -d "$SCANNER$VERSION.tar.gz" ]; then
-  wget http://wald.intevation.org/frs/download.php/1344/$SCANNER$VERSION.tar.gz
+  wget -O $DIRECTORY http://wald.intevation.org/frs/download.php/1344/$SCANNER$VERSION.tar.gz
 fi
 
 tar -zxvf openvas-scanner-*
@@ -95,13 +95,13 @@ make
 make doc
 sudo make install
 make rebuild_cache
-
+cd $DIRECTORY
 
 
 
 echo "Downloading and building $MANAGER$VERSION"
 if [ ! -d "$MANAGER$VERSION.tar.gz" ]; then
-  wget http://wald.intevation.org/frs/download.php/1350/$MANAGER$VERSION.tar.gz
+  wget -O $DIRECTORY http://wald.intevation.org/frs/download.php/1350/$MANAGER$VERSION.tar.gz
 fi
 
 tar -zxvf openvas-manager-*
@@ -119,13 +119,13 @@ make
 make doc
 sudo make install
 make rebuild_cache
-
+cd $DIRECTORY
 
 
 
 echo "Downloading and building $GREENBONE$VERSION"
 if [ ! -f "$GREENBONE$VERSION.tar.gz" ]; then
-  wget http://wald.intevation.org/frs/download.php/1365/$GREENBONE$VERSION.tar.gz
+  wget -O $DIRECTORY http://wald.intevation.org/frs/download.php/1365/$GREENBONE$VERSION.tar.gz
 fi
 
 tar -zxvf greenbone-security-assistant-*
@@ -144,13 +144,13 @@ make
 make doc
 sudo make install
 make rebuild_cache
-
+cd $DIRECTORY
 
 
 
 echo "Downloading and building $CLI$VERSION"
 if [ ! -f "$CLI$VERSION.tar.gz" ]; then
-  wget http://wald.intevation.org/frs/download.php/1369/$CLI$VERSION.tar.gz
+  wget -O $DIRECTORY http://wald.intevation.org/frs/download.php/1369/$CLI$VERSION.tar.gz
 fi
 
 tar -zxvf openvas-cli-*
@@ -168,7 +168,7 @@ make
 make doc
 sudo make install
 make rebuild_cache
-
+cd $DIRECTORY
 
 echo "Adding openvas to the enviroment PATH"
 export PATH=/opt/openvas/bin:/opt/openvas/sbin:$PATH
