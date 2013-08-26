@@ -175,20 +175,17 @@ cd ~/$DIRECTORY
 
 echo "Adding openvas to the enviroment PATH"
 export PATH=/opt/openvas/bin:/opt/openvas/sbin:$PATH
-
+sudo sh -c "echo 'export PATH=/opt/openvas/bin:/opt/openvas/sbin:$PATH' >> /etc/bash.bashrc" 
 
 sudo sh -c "echo '/opt/openvas/lib' > /etc/ld.so.conf.d/openvas"
 sudo sh -c "echo '/opt/openvas/lib' >> /etc/ld.so.conf"
 sudo ldconfig
 
-# this above did not work for me I had to manually edit /etc/ld.co.conf
-# and add /opt/openvas/lib
-# then run ldconfig
+# TO DO LATER
 
-
-sudo chmod -R 777 /opt/openvas/var/log
-sudo chmod -R 777 /opt/openvar/var/run
-sudo chmod 644 /opt/openvas/var/lib/openvas/private/CA/serverkey.pem
+#sudo chmod -R 777 /opt/openvas/var/log
+#sudo chmod -R 777 /opt/openvar/var/run
+#sudo chmod 644 /opt/openvas/var/lib/openvas/private/CA/serverkey.pem
 
 
 #configure
