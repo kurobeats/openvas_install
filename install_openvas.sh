@@ -213,6 +213,9 @@ sudo -b env  PATH="/opt/openvas/bin:/opt/openvas/sbin:$PATH" /opt/openvas/sbin/o
 echo "sudo openvasmd --rebuild"
 sudo /opt/openvas/sbin/openvasmd --rebuild
 
+
+sudo -b env  PATH="/opt/openvas/bin:/opt/openvas/sbin:$PATH" /opt/openvas/sbin/openvas-scapdata-sync
+
 echo "Create your first user"
 echo "openvasmd --first-user=myuser"
 
