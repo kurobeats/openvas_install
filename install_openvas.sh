@@ -43,7 +43,7 @@ cd ~/$DIRECTORY
 
 
 echo "Installing needed packages"
-sudo apt-get -y install sudo build-essential make cmake pkg-config nmap libssh-dev libgnutls-dev  libglib2.0-dev libpcap-dev libgpgme11-dev uuid-dev bison libksba-dev rsync sqlite3 wget curl alien fakeroot libmicrohttpd-dev libxml2-dev libxslt1-dev xsltproc
+sudo apt-get -y install sudo build-essential make cmake pkg-config nmap libssh-dev libgnutls-dev  libglib2.0-dev libpcap-dev libgpgme11-dev uuid-dev bison libksba-dev rsync sqlite3 libsqlite3-dev wget curl alien fakeroot libmicrohttpd-dev libxml2-dev libxslt1-dev xsltproc
 
 
 echo "exporting PGK_CONFIG_PATH"
@@ -193,11 +193,25 @@ sudo ldconfig
 echo "CONFIGURE"
 
 echo "sudo openvas-mkcert"
+sudo /opt/openvas/sbin/openvas-mkcert
+
+
+
+#echo "sync GreenBone-NVT"
+#sudo /opt/openvas/sbin/greenbone-nvt-sync
+
+echo "Sync NVT"
+sudo -b env  PATH="/opt/openvas/bin:/opt/openvas/sbin:$PATH" /opt/openvas/sbin/openvas-nvt-sync
 
 echo "sudo openvas-mkcert-client -n -i"
+sudo -b env  PATH="/opt/openvas/bin:/opt/openvas/sbin:$PATH" /opt/openvas/sbin/openvas-mkcert-client -n -i
+
+
+echo "Starting the scanner"
+sudo -b env  PATH="/opt/openvas/bin:/opt/openvas/sbin:$PATH" /opt/openvas/sbin/openvassd
 
 echo "sudo openvasmd --rebuild"
-
+sudo /opt/openvas/sbin/openvasmd --rebuild
 
 echo "Create your first user"
 echo "openvasmd --first-user=myuser"
@@ -206,5 +220,5 @@ echo "openvasmd --first-user=myuser"
 #sudo  mkdir /opt/openvas/tmp
 #sudo  chmod 777 /opt/openvas/tmp
 
-echo "if any issues download and run"
+echo "if any issues download and run with the --v7 flag"
 echo "wget --no-check-certificate https://svn.wald.intevation.org/svn/openvas/trunk/tools/openvas-check-setup"
