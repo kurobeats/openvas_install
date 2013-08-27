@@ -51,127 +51,48 @@ export PKG_CONFIG_PATH=/opt/openvas/lib/pkgconfig
 
 
 
-echo "Downloading and building $LIBRARIES$VERSION"
-if [ ! -f "$LIBRARIES$VERSION.tar.gz" ]; then
-
-  wget --directory-prefix ~/$DIRECTORY http://wald.intevation.org/frs/download.php/1340/$LIBRARIES$VERSION.tar.gz
-fi
 
 
-tar zxvf openvas-libraries-*
-cd openvas-libraries-*
+function get_build {
+  echo "Downloading and building $1"
 
-if [  -d "build" ]; then
-  echo "removing build directory for $LIBRARIES$VERSION"
-  rm -rf  build
-fi
+  cd ~/$DIRECTORY
 
-mkdir build
+  if [ ! -f "$1.tar.gz" ]; then
+    wget --directory-prefix ~/$DIRECTORY http://wald.intevation.org/frs/download.php/1340/$1.tar.gz
+  fi
 
-cd build
-cmake -DCMAKE_INSTALL_PREFIX=/opt/openvas ..
-make
-make doc
-sudo make install
-make rebuild_cache
-cd ~/$DIRECTORY
+  tar zxvf openvas-libraries-*
 
+  cd openvas-libraries-*
 
-echo "Downloading and building $SCANNER$VERSION"
-if [ ! -d "$SCANNER$VERSION.tar.gz" ]; then
-  wget --directory-prefix ~/$DIRECTORY http://wald.intevation.org/frs/download.php/1344/$SCANNER$VERSION.tar.gz
-fi
+  if [  -d "build" ]; then
+    echo "removing build directory for $1"
+    rm -rf  build
+  fi
 
-tar -zxvf openvas-scanner-*
+  mkdir build
 
-cd openvas-scanner-*
+  cd build
+  cmake -DCMAKE_INSTALL_PREFIX=/opt/openvas ..
+  make
+  make doc
+  sudo make install
+  make rebuild_cache
+  cd ~/$DIRECTORY
 
-if [  -d "build" ]; then
-  echo "removing build directory for $SCANNER$VERSION"
-  rm -rf  build
-fi
+}
 
-mkdir build
-cd build
-cmake -DCMAKE_INSTALL_PREFIX=/opt/openvas ..
-make
-make doc
-sudo make install
-make rebuild_cache
-cd ~/$DIRECTORY
+get_build $LIBRARIES$VERSION
 
+get_build $SCANNER$VERSION
 
+get_build $MANAGER$VERSION
 
-echo "Downloading and building $MANAGER$VERSION"
-if [ ! -d "$MANAGER$VERSION.tar.gz" ]; then
-  wget --directory-prefix ~/$DIRECTORY http://wald.intevation.org/frs/download.php/1350/$MANAGER$VERSION.tar.gz
-fi
+get_build $GREENBONE$VERSION
 
-tar -zxvf openvas-manager-*
-cd openvas-manager-*
+get_build $CLI$VERSION
 
-if [  -d "build" ]; then
-  echo "removing build directory for $MANAGER$VERSION"
-  rm -rf  build
-fi
-
-mkdir build
-cd build
-cmake -DCMAKE_INSTALL_PREFIX=/opt/openvas ..
-make
-make doc
-sudo make install
-make rebuild_cache
-cd ~/$DIRECTORY
-
-
-
-echo "Downloading and building $GREENBONE$VERSION"
-if [ ! -f "$GREENBONE$VERSION.tar.gz" ]; then
-  wget --directory-prefix ~/$DIRECTORY http://wald.intevation.org/frs/download.php/1365/$GREENBONE$VERSION.tar.gz
-fi
-
-tar -zxvf greenbone-security-assistant-*
-
-cd greenbone-security-assistant-*
-
-if [  -d "build" ]; then
-  echo "removing build directory for $GREENBONE$VERSION"
-  rm -rf  build
-fi
-
-mkdir build
-cd build
-cmake -DCMAKE_INSTALL_PREFIX=/opt/openvas ..
-make
-make doc
-sudo make install
-make rebuild_cache
-cd ~/$DIRECTORY
-
-
-
-echo "Downloading and building $CLI$VERSION"
-if [ ! -f "$CLI$VERSION.tar.gz" ]; then
-  wget --directory-prefix ~/$DIRECTORY http://wald.intevation.org/frs/download.php/1369/$CLI$VERSION.tar.gz
-fi
-
-tar -zxvf openvas-cli-*
-cd openvas-cli-*
-
-if [  -d "build" ]; then
-  echo "removing build directory for $CLI$VERSION"
-  rm -rf  build
-fi
-
-mkdir build
-cd build
-cmake -DCMAKE_INSTALL_PREFIX=/opt/openvas ..
-make
-make doc
-sudo make install
-make rebuild_cache
-cd ~/$DIRECTORY
 
 echo "Adding openvas to the enviroment PATH"
 export PATH=/opt/openvas/bin:/opt/openvas/sbin:$PATH
