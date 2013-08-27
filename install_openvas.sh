@@ -43,7 +43,7 @@ cd ~/$DIRECTORY
 
 
 echo "Installing needed packages"
-sudo apt-get -y install sudo build-essential make cmake pkg-config nmap libssh-dev libgnutls-dev  libglib2.0-dev libpcap-dev libgpgme11-dev uuid-dev bison libksba-dev rsync sqlite3 libsqlite3-dev wget curl alien fakeroot libmicrohttpd-dev libxml2-dev libxslt1-dev xsltproc
+sudo apt-get -y install sudo build-essential make cmake nsis pkg-config nmap libssh-dev libgnutls-dev  libglib2.0-dev libpcap-dev libgpgme11-dev uuid-dev bison libksba-dev rsync sqlite3 libsqlite3-dev wget curl alien fakeroot libmicrohttpd-dev libxml2-dev libxslt1-dev xsltproc
 
 
 echo "exporting PGK_CONFIG_PATH"
@@ -203,6 +203,9 @@ sudo /opt/openvas/sbin/openvas-mkcert
 echo "Sync NVT"
 sudo -b env  PATH="/opt/openvas/bin:/opt/openvas/sbin:$PATH" /opt/openvas/sbin/openvas-nvt-sync
 
+
+sleep 10
+
 echo "sudo openvas-mkcert-client -n -i"
 sudo -b env  PATH="/opt/openvas/bin:/opt/openvas/sbin:$PATH" /opt/openvas/sbin/openvas-mkcert-client -n -i
 
@@ -210,11 +213,48 @@ sudo -b env  PATH="/opt/openvas/bin:/opt/openvas/sbin:$PATH" /opt/openvas/sbin/o
 echo "Starting the scanner"
 sudo -b env  PATH="/opt/openvas/bin:/opt/openvas/sbin:$PATH" /opt/openvas/sbin/openvassd
 
+
+sleep 10
+
 echo "sudo openvasmd --rebuild"
 sudo /opt/openvas/sbin/openvasmd --rebuild
 
 
+sleep 10
+
+
+
+echo "doing the ScapData Sync"
 sudo -b env  PATH="/opt/openvas/bin:/opt/openvas/sbin:$PATH" /opt/openvas/sbin/openvas-scapdata-sync
+
+
+sleep 10
+
+echo "Doing the CertData sync"
+sudo -b env  PATH="/opt/openvas/bin:/opt/openvas/sbin:$PATH" /opt/openvas/sbin/openvas-certdata-sync
+
+
+sleep 10 
+
+
+if [ !  -f "/opt/openvas/etc/openvas/pwpolicy.conf" ]; then
+  echo "creating password policy file, read the doc and edit it as you need"
+  sudo touch /opt/openvas/etc/openvas/pwpolicy.conf
+fi
+
+
+echo "Starting openvas manager"
+sudo -b env  PATH="/opt/openvas/bin:/opt/openvas/sbin:$PATH" /opt/openvas/sbin/openvasmd
+
+
+
+echo "Starting GreenBone security assistant"
+sudo -b env  PATH="/opt/openvas/bin:/opt/openvas/sbin:$PATH" /opt/openvas/sbin/gsad
+
+
+echo "Create config file"
+sudo -b env  PATH="/opt/openvas/bin:/opt/openvas/sbin:$PATH" openvassd -s > /opt/openvas/etc/openvas/openvassd.conf
+
 
 echo "Create your first user"
 echo "openvasmd --first-user=myuser"
