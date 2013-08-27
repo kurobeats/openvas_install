@@ -50,9 +50,6 @@ echo "exporting PGK_CONFIG_PATH"
 export PKG_CONFIG_PATH=/opt/openvas/lib/pkgconfig
 
 
-
-
-
 function get_build {
   echo "Downloading and building $1"
 
@@ -102,12 +99,6 @@ sudo sh -c "echo '/opt/openvas/lib' > /etc/ld.so.conf.d/openvas"
 sudo sh -c "echo '/opt/openvas/lib' >> /etc/ld.so.conf"
 sudo ldconfig
 
-# TO DO LATER
-
-#sudo chmod -R 777 /opt/openvas/var/log
-#sudo chmod -R 777 /opt/openvar/var/run
-#sudo chmod 644 /opt/openvas/var/lib/openvas/private/CA/serverkey.pem
-
 
 #configure
 
@@ -116,38 +107,26 @@ echo "CONFIGURE"
 echo "sudo openvas-mkcert"
 sudo /opt/openvas/sbin/openvas-mkcert
 
-
-
-#echo "sync GreenBone-NVT"
-#sudo /opt/openvas/sbin/greenbone-nvt-sync
-
 echo "Sync NVT"
 sudo -b env  PATH="/opt/openvas/bin:/opt/openvas/sbin:$PATH" /opt/openvas/sbin/openvas-nvt-sync
-
 
 sleep 10
 
 echo "sudo openvas-mkcert-client -n -i"
 sudo -b env  PATH="/opt/openvas/bin:/opt/openvas/sbin:$PATH" /opt/openvas/sbin/openvas-mkcert-client -n -i
 
-
 echo "Starting the scanner"
 sudo -b env  PATH="/opt/openvas/bin:/opt/openvas/sbin:$PATH" /opt/openvas/sbin/openvassd
-
 
 sleep 10
 
 echo "sudo openvasmd --rebuild"
 sudo /opt/openvas/sbin/openvasmd --rebuild
 
-
 sleep 10
-
-
 
 echo "doing the ScapData Sync"
 sudo -b env  PATH="/opt/openvas/bin:/opt/openvas/sbin:$PATH" /opt/openvas/sbin/openvas-scapdata-sync
-
 
 sleep 10
 
@@ -167,11 +146,8 @@ fi
 echo "Starting openvas manager"
 sudo -b env  PATH="/opt/openvas/bin:/opt/openvas/sbin:$PATH" /opt/openvas/sbin/openvasmd
 
-
-
 echo "Starting GreenBone security assistant"
 sudo -b env  PATH="/opt/openvas/bin:/opt/openvas/sbin:$PATH" /opt/openvas/sbin/gsad
-
 
 echo "Create config file"
 sudo -b env  PATH="/opt/openvas/bin:/opt/openvas/sbin:$PATH" openvassd -s > /opt/openvas/etc/openvas/openvassd.conf
@@ -180,9 +156,6 @@ sudo -b env  PATH="/opt/openvas/bin:/opt/openvas/sbin:$PATH" openvassd -s > /opt
 echo "Create your first user"
 echo "openvasmd --first-user=myuser"
 
-
-#sudo  mkdir /opt/openvas/tmp
-#sudo  chmod 777 /opt/openvas/tmp
 
 echo "if any issues download and run with the --v7 flag"
 echo "wget --no-check-certificate https://svn.wald.intevation.org/svn/openvas/trunk/tools/openvas-check-setup"
