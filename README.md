@@ -10,3 +10,7 @@ YOU are welcome to help out :-)
 
 Also I will be using funcions in the next days to clean up the script make it look "elegant"
 as of now since is mostly debbuging I did it the fast way.
+
+
+ === START UP SCRIPTS FOR UBUNTU ===
+add the *.conf into /etc/init (this is using the new Ubuntu init format)
