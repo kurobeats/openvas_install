@@ -26,12 +26,13 @@
 
 
 DIRECTORY="openvas-dev"
-VERSION="+beta1"
-LIBRARIES="openvas-libraries-7.0"
-SCANNER="openvas-scanner-4.0"
-MANAGER="openvas-manager-5.0"
-GREENBONE="greenbone-security-assistant-5.0"
-CLI="openvas-cli-1.3"
+#VERSION="+beta1"
+VERSION=""
+LIBRARIES="openvas-libraries-7.0.2"
+SCANNER="openvas-scanner-4.0.1"
+MANAGER="openvas-manager-5.0.2"
+GREENBONE="greenbone-security-assistant-5.0.1"
+CLI="openvas-cli-1.3.0"
 
 
 if [ ! -d ~/${DIRECTORY} ]; then
