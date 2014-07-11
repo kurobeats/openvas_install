@@ -48,7 +48,6 @@ do
 
 	if [ $i == 1 ]
 	then
-		echo "$i .............. hello"
 		ID=1671
 		PACKAGE=$LIBRARIES
 	
