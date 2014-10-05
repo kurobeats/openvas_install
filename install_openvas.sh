@@ -25,56 +25,44 @@
 #
 
 DIRECTORY="openvas-setup"
-LIBRARIES="openvas-libraries-7.0.2"
-SCANNER="openvas-scanner-4.0.1"
-GREENBONE="greenbone-security-assistant-5.0.1"
-CLI="openvas-cli-1.3.0"
-
-
-if [ ! -d ~/${DIRECTORY} ]; then
-  echo -e "Creating $DIRECTORY directory\n"
-  mkdir $DIRECTORY
-fi
-
-cd ./$DIRECTORY
+LIBRARIES="openvas-libraries"
+SCANNER="openvas-scanner"
+GREENBONE="gsa"
+CLI="openvas-cli"
 
 echo -e "Installing needed packages\n"
-sudo apt-get -y install sudo build-essential make cmake nsis pkg-config nmap libssh-dev libgnutls-dev  libglib2.0-dev libpcap-dev libgpgme11-dev uuid-dev bison libksba-dev rsync sqlite3 libsqlite3-dev wget curl alien fakeroot libmicrohttpd-dev libxml2-dev libxslt1-dev xsltproc
+sudo apt-get -y install subversion build-essential make cmake nsis pkg-config nmap libssh-dev libgnutls-dev  libglib2.0-dev libpcap-dev libgpgme11-dev uuid-dev bison libksba-dev rsync sqlite3 libsqlite3-dev curl alien fakeroot libmicrohttpd-dev libxml2-dev libxslt1-dev xsltproc
 
 echo -e "Downloading required packages\n"
+
+svn checkout https://scm.wald.intevation.org/svn/openvas/trunk
+
+mv ./trunk ./$DIRECTORY
+
+cd ./$DIRECTORY
 
 for i in {1..4}
 do
 
 	if [ $i == 1 ]
 	then
-		ID=1671
 		PACKAGE=$LIBRARIES
 	
 	elif [ $i == 2 ]
 	then
-		ID=1640
 		PACKAGE=$SCANNER
 	
 	elif [ $i == 3 ]
 	then
-		ID=1675
 		PACKAGE=$GREENBONE
 
 	elif [ $i == 4 ]
 	then
-		ID=1633
 		PACKAGE=$CLI
 	fi
-
-	echo -e "Getting $PACKAGE...\n"
-	
-	wget http://wald.intevation.org/frs/download.php/$ID/$PACKAGE.tar.gz
 	
 	echo "exporting PGK_CONFIG_PATH"
 	export PKG_CONFIG_PATH=/opt/openvas/lib/pkgconfig
-	
-	tar -zxvf $PACKAGE.tar.gz
 	
 	cd ./$PACKAGE
 	
